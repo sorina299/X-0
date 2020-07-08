@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1594130367 source:c:\users\sorina\documents\github\x-0\x-0\main.c
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+
