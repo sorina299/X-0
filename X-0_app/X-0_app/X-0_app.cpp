@@ -10,6 +10,8 @@
     #define CLEAR_SCREEN "clear"
 #endif
 
+#define player1 1
+#define player2 2
 
 
 void matrix_init(char matrix[][3]) {
@@ -61,8 +63,34 @@ void symbol_insertion(char matrix[][3], char poz, int player) {
 
 bool game_win(char matrix[][3]) {
     int i;
+
+    if (matrix[0][0] == matrix[1][1] && matrix[1][1] == matrix[2][2]) { //diag principala
+        if (matrix[1][1] == 'X') {
+            printf("Jucatorul 1 a castigat");
+        }
+        else {
+            if (matrix[1][1] == 'O') {
+                printf("Jucatorul 2 a castigat");
+            }
+        }
+        return true;
+    }
+
+
+    if (matrix[0][2] == matrix[1][1] && matrix[1][1] == matrix[2][0]) { //diag secundara
+        if (matrix[1][1] == 'X') {
+            printf("Jucatorul 1 a castigat");
+        }
+        else {
+            if (matrix[1][1] == 'O') {
+                printf("Jucatorul 2 a castigat");
+            }
+        }
+        return true;
+    }
+
     for (i = 0; i < 3; i++) {
-        if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) {
+        if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) { //linii
             if (matrix[i][1] == 'X') {
                 printf("Jucatorul 1 a castigat");
             }
@@ -74,7 +102,7 @@ bool game_win(char matrix[][3]) {
             return true;
         }
 
-        if (matrix[0][i] == matrix[1][i] && matrix[1][i] == matrix[2][i]) {
+        if (matrix[0][i] == matrix[1][i] && matrix[1][i] == matrix[2][i]) { //coloane
             if (matrix[1][i] == 'X') {
                 printf("Jucatorul 1 a castigat");
             }
@@ -85,92 +113,72 @@ bool game_win(char matrix[][3]) {
             }
             return true;
         }
-
-        if (matrix[0][0] == matrix[1][1] && matrix[1][1] == matrix[2][2]) {
-            if (matrix[1][1] == 'X') {
-                printf("Jucatorul 1 a castigat");
-            }
-            else {
-                if (matrix[1][1] == 'O') {
-                    printf("Jucatorul 2 a castigat");
-                }
-            }
-            return true;
-        }
-
-        if (matrix[i][0] == matrix[i][1] && matrix[i][1] == matrix[i][2]) {
-            if (matrix[i][1] == 'X') {
-                printf("Jucatorul 1 a castigat");
-            }
-            else {
-                if (matrix[i][1] == 'O') {
-                    printf("Jucatorul 1 a castigat");
-                }
-            }
-            return true;
-        }
-
-        if (matrix[0][2] == matrix[1][1] && matrix[1][1] == matrix[2][0]) {
-            if (matrix[1][1] == 'X') {
-                printf("Jucatorul 1 a castigat");
-            }
-            else {
-                if (matrix[1][1] == 'O') {
-                    printf("Jucatorul 2 a castigat");
-                }
-            }
-            return true;
-        }
     }
+
     printf("Nu exista castigator");
     return false;
 }
 
 void game_print(char matrix[][3]) {
-    printf("Tabla de joc:\n");
-    matrix_init(matrix);
+    system(CLEAR_SCREEN);
+    printf("Tabla de joc:\n\n");
+    //matrix_init(matrix);
     matrix_print(matrix);
 }
 
-int game_play(char matrix[][3]) {
-    int player;
+
+
+void game_play() {
+    char matrix[3][3];
+    matrix_init(matrix);
+
+    //int player;
     char poz;
     int turn = 1;
 
-    if (turn % 2 != 0) {
-        while (1) {
-            printf("Player 1 move:");
-            scanf("%c", &poz);
-            if (symbol_check(matrix, poz) == 0) {
-                return 0;
-            }
-            else {
-                return 1;
-                player = 1;
-                symbol_insertion(matrix, poz, player);
-                turn++;
-            }
-        }
-    }
-    else {
-        while (1) {
-            printf("Player 2 move:");
-            scanf("%c", &poz);
-            if (symbol_check(matrix, poz) == 0) {
-                return 0;
-            }
-            else {
-                return 1;
-                player = 2;
-                symbol_insertion(matrix, poz, player);
-                turn++;
+    while (1) {
+        game_print(matrix);
+        if (turn % 2 != 0) { //first player turn
+            while (1) {
+                printf("\nPlayer 1 move:");
+                scanf("%c", &poz);
+                if (poz == '\n') {
+                    scanf("%c", &poz);
+                }
+                if ( symbol_check(matrix, poz) ) {
+                    //player = 1;
+                    symbol_insertion(matrix, poz, player1);
+                    turn++;
+                    break;
+                }
+                else {
+                    printf("\nPozitie incorecta!!!");                    
+                }
             }
         }
-    }
+        else {
+            while (1) {
+                printf("\nPlayer 2 move:");
+                scanf("%c", &poz);
+                if (poz == '\n') {
+                    scanf("%c", &poz);
+                }
+                if ( symbol_check(matrix, poz) ) {
+                    symbol_insertion(matrix, poz, player2);
+                    turn++;
+                    break;
+                }
+                else {
+                    printf("\nPozitie incorecta!!!");     
+                }
+            }
+        }
 
-    if (turn == 10) {
-        system(CLEAR_SCREEN);
-        game_win(matrix);
+        if (turn == 10) {
+            system(CLEAR_SCREEN);
+            game_win(matrix);
+            break;
+        }
     }
 }
 
@@ -178,8 +186,7 @@ int game_play(char matrix[][3]) {
 
 int main()
 {
-    char matrix[3][3];
-    game_play(matrix);
+    game_play();
     return 0;
 }
 
