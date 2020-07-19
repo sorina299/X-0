@@ -174,10 +174,19 @@ void game_play() {
             }
         }
 
-        if (turn == 10) {
-            system(CLEAR_SCREEN);
-            game_win(matrix);
-            break;
+        if ( game_win(matrix) ) {
+            printf("\n");
+            matrix_print(matrix);
+            return;
+        }
+        else {
+            if (turn == 10) {
+              /*  system(CLEAR_SCREEN);
+                game_win(matrix);
+                break;*/
+                return;
+            }
+
         }
     }
 }
