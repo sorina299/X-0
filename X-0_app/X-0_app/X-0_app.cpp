@@ -195,7 +195,9 @@ int main()
         if (a == 1) {
             game_play();
         } else {
-            return 0;
+            if (a == 0) {
+                return 0;
+            }
         }
     }
 }
