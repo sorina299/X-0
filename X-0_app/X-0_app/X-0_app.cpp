@@ -13,7 +13,6 @@
 #define player1 1
 #define player2 2
 
-
 void matrix_init(char matrix[][3]) {
     char c = '1';
     for (int i = 0; i < 3; i++) {
@@ -27,7 +26,17 @@ void matrix_init(char matrix[][3]) {
 void matrix_print(char matrix[][3]) {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            printf("%c  ", matrix[i][j]);
+            if (matrix[i][j] == 'X') {
+                printf("\033[1;35m%c  \033[0m", matrix[i][j]);
+            }
+            else {
+                if (matrix[i][j] == 'O') {
+                    printf("\033[0;32m%c  \033[0m", matrix[i][j]);
+                }
+                else {
+                    printf("%c  ", matrix[i][j]);
+                }
+            }
         }
         printf("\n\n");
     }
@@ -116,7 +125,7 @@ int game_win(char matrix[][3]) {
 
 void game_print(char matrix[][3]) {
     system(CLEAR_SCREEN);
-    printf("Game Board:\n\n");
+    printf("\033[01;33mGame Board:\n\n\033[0m");
     matrix_print(matrix);
 }
 
@@ -131,7 +140,7 @@ void game_play() {
         game_print(matrix);
         if (turn % 2 != 0) { //first player turn
             while (1) {
-                printf("\nPlayer 1 move:");
+                printf("\033[1;35m\nPlayer 1 move: \033[0m");
                 scanf("%c", &poz);
                 if (poz == '\n') {
                     scanf("%c", &poz);
@@ -142,13 +151,13 @@ void game_play() {
                     break;
                 }
                 else {
-                    printf("\nIncorrect position!!!");
+                    printf("\033[0;31m\nIncorrect position!!!\033[0m");
                 }
             }
         }
         else {
             while (1) {
-                printf("\nPlayer 2 move:");
+                printf("\033[0;32m\nPlayer 2 move: \033[0m");
                 scanf("%c", &poz);
                 if (poz == '\n') {
                     scanf("%c", &poz);
@@ -159,25 +168,25 @@ void game_play() {
                     break;
                 }
                 else {
-                    printf("\nIncorrect position!!!");
+                    printf("\033[0;31m\nIncorrect position!!!\033[0m");
                 }
             }
         }
 
         if (game_win(matrix) == 1) {
-            printf("\nPlayer 1 wins\n\n");
+            printf("\033[1;35m\nPlayer 1 wins\n\n\033[0m");
             matrix_print(matrix);
             return;
         }
 
         if (game_win(matrix) == 2) {
-            printf("\nPlayer 2 wins\n\n");
+            printf("\033[0;32m\nPlayer 2 wins\n\n\033[0m");
             matrix_print(matrix);
             return;
         }
   
         if (turn == 10) {
-            printf("\nNobody wins\n\n");
+            printf("\033[0;34m\nNobody wins\n\n\033[0m");
             matrix_print(matrix);
             return;
         }
@@ -189,7 +198,7 @@ int main()
     int a;
     game_play();
     while (1) {
-        printf("Do you want to play again? Choose 1 for YES or 0 for NO ");
+        printf("\033[1;36mDo you want to play again? Choose 1 for YES or 0 for NO \033[0m");
         scanf("%d", &a);
         
         if (a == 1) {
@@ -201,4 +210,3 @@ int main()
         }
     }
 }
-
