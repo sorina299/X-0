@@ -13,6 +13,26 @@
 #define player1 1
 #define player2 2
 
+void lines_row_print(){
+    for ( int i = 0; i < 3; i++ ){
+        printf("\n");
+        if (i == 0) {
+            printf("  _________________________");
+        }
+    }
+}
+
+void lines_column_print(){
+    for (int i = 0; i < 3; i++) {
+        if (i == 1) {
+            printf(" | ");
+        }
+        else {
+            printf(" ");
+        }
+    }
+}
+
 void matrix_init(char matrix[][3]) {
     char c = '1';
     for (int i = 0; i < 3; i++) {
@@ -25,21 +45,26 @@ void matrix_init(char matrix[][3]) {
 
 void matrix_print(char matrix[][3]) {
     for (int i = 0; i < 3; i++) {
+        lines_row_print();
+        lines_column_print();
         for (int j = 0; j < 3; j++) {
             if (matrix[i][j] == 'X') {
-                printf("\033[1;35m%c  \033[0m", matrix[i][j]);
+                printf("\033[1;35m %c \033[0m", matrix[i][j]);
+                lines_column_print();
             }
             else {
                 if (matrix[i][j] == 'O') {
-                    printf("\033[0;32m%c  \033[0m", matrix[i][j]);
+                    printf("\033[0;32m %c \033[0m", matrix[i][j]);
+                    lines_column_print();
                 }
                 else {
-                    printf("%c  ", matrix[i][j]);
+                    printf(" %c ", matrix[i][j]);
+                    lines_column_print();
                 }
             }
         }
-        printf("\n\n");
     }
+    lines_row_print();
 }
 
 bool symbol_check(char matrix[][3], char poz) {
@@ -174,18 +199,21 @@ void game_play() {
         }
 
         if (game_win(matrix) == 1) {
+            system(CLEAR_SCREEN);
             printf("\033[1;35m\nPlayer 1 wins\n\n\033[0m");
             matrix_print(matrix);
             return;
         }
 
         if (game_win(matrix) == 2) {
+            system(CLEAR_SCREEN);
             printf("\033[0;32m\nPlayer 2 wins\n\n\033[0m");
             matrix_print(matrix);
             return;
         }
   
         if (turn == 10) {
+            system(CLEAR_SCREEN);
             printf("\033[0;34m\nNobody wins\n\n\033[0m");
             matrix_print(matrix);
             return;
